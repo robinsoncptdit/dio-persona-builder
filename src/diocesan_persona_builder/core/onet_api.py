@@ -17,6 +17,12 @@ from tenacity import (
 from pydantic import BaseModel, Field
 
 from .config import ONetCredentials, APIConfig
+from .exceptions import (
+    ONetError,
+    ONetConnectionError,
+    ONetAPIError,
+    ONetDataError
+)
 
 
 logger = logging.getLogger(__name__)
@@ -340,38 +346,69 @@ class ONetAPIClient:
             JSON response data
             
         Raises:
-            requests.RequestException: On API errors
+            ONetConnectionError: On connection issues
+            ONetAPIError: On API errors (auth, not found, etc.)
+            ONetDataError: On data parsing issues
         """
         self._rate_limit()
         
         url = f"{self.config.base_url}/{endpoint}"
         logger.debug(f"Making request to {url} with params {params}")
         
-        response = self.session.get(
-            url,
-            params=params,
-            timeout=self.config.timeout
-        )
+        try:
+            response = self.session.get(
+                url,
+                params=params,
+                timeout=self.config.timeout
+            )
+        except requests.ConnectionError as e:
+            raise ONetConnectionError(f"Cannot connect to O*NET API at {url}") from e
+        except requests.Timeout as e:
+            raise ONetConnectionError(f"Timeout connecting to O*NET API (>{self.config.timeout}s)") from e
+        except requests.RequestException as e:
+            raise ONetConnectionError(f"Network error contacting O*NET API: {e}") from e
         
         # Check for rate limiting
         if response.status_code == 429:
             retry_after = int(response.headers.get("Retry-After", 60))
             logger.warning(f"Rate limited. Retrying after {retry_after} seconds")
             time.sleep(retry_after)
-            raise requests.RequestException("Rate limited")
+            raise ONetAPIError("Rate limited by O*NET API", status_code=429, response_body=response.text)
         
         # Log the response for debugging
         logger.info(f"Response status: {response.status_code} for {url}")
         
         if response.status_code == 401:
             logger.error(f"Authentication failed for {url} - check credentials")
-            raise requests.HTTPError(f"Authentication failed: {response.status_code}")
+            raise ONetAPIError(
+                "Authentication failed - check O*NET username/password in .env file",
+                status_code=401,
+                response_body=response.text
+            )
         elif response.status_code == 404:
             logger.error(f"Endpoint not found: {url}")
-            raise requests.HTTPError(f"Not found: {response.status_code}")
+            raise ONetAPIError(
+                f"O*NET occupation code not found: {endpoint}",
+                status_code=404,
+                response_body=response.text
+            )
+        elif response.status_code >= 500:
+            raise ONetAPIError(
+                f"O*NET API server error: {response.status_code}",
+                status_code=response.status_code,
+                response_body=response.text
+            )
+        elif response.status_code >= 400:
+            raise ONetAPIError(
+                f"O*NET API client error: {response.status_code}",
+                status_code=response.status_code,
+                response_body=response.text
+            )
         
-        response.raise_for_status()
-        return response.json()
+        try:
+            return response.json()
+        except ValueError as e:
+            raise ONetDataError(f"Invalid JSON response from O*NET API: {e}") from e
     
     def get_occupation(self, onet_code: str) -> Dict[str, Any]:
         """Get basic occupation information.

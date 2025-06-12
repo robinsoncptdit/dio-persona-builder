@@ -8,6 +8,7 @@ from dataclasses import dataclass
 from ..core.csv_loader import DiocesanRole, CSVLoader
 from ..core.onet_api import ONetAPIClient, ONetOccupationData
 from ..core.template_engine import TemplateEngine
+from ..core.technology_filter import TechnologyFilter
 from ..core.config import Settings
 
 
@@ -39,8 +40,13 @@ class PersonaBuilderAgent:
             credentials=settings.credentials,
             config=settings.api_config
         )
+        
+        # Create shared technology filter for optimal persona-specific recommendations
+        self.technology_filter = TechnologyFilter(api_key=settings.openai_api_key)
+        
         self.template_engine = TemplateEngine(
-            template_dir=Path(__file__).parent.parent.parent.parent / "templates"
+            template_dir=Path(__file__).parent.parent.parent.parent / "templates",
+            technology_filter=self.technology_filter
         )
         self.tasks: List[PersonaBuildTask] = []
         self._onet_cache: Dict[str, ONetOccupationData] = {}

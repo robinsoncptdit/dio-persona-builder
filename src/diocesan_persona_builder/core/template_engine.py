@@ -19,18 +19,18 @@ logger = logging.getLogger(__name__)
 class PersonaData:
     """Container for persona template data."""
     
-    def __init__(self, role: DiocesanRole, onet_data: ONetOccupationData, openai_api_key: Optional[str] = None):
+    def __init__(self, role: DiocesanRole, onet_data: ONetOccupationData, technology_filter: Optional[TechnologyFilter] = None):
         """Initialize persona data.
         
         Args:
             role: Diocesan role information
             onet_data: O*NET occupation data
-            openai_api_key: OpenAI API key for technology filtering
+            technology_filter: Shared technology filter instance for persona-specific recommendations
         """
         self.role = role
         self.onet_data = onet_data
         self.generated_at = datetime.utcnow()
-        self.tech_filter = TechnologyFilter(openai_api_key)
+        self.tech_filter = technology_filter or TechnologyFilter(api_key=None)
     
     def get_top_skills(self, limit: int = 10) -> List[Dict[str, Any]]:
         """Get top skills sorted by importance.
@@ -401,13 +401,15 @@ class PersonaData:
 class TemplateEngine:
     """Jinja2-based template engine for persona generation."""
     
-    def __init__(self, template_dir: Path):
+    def __init__(self, template_dir: Path, technology_filter: Optional[TechnologyFilter] = None):
         """Initialize the template engine.
         
         Args:
             template_dir: Directory containing Jinja2 templates
+            technology_filter: Shared technology filter for persona-specific recommendations
         """
         self.template_dir = template_dir
+        self.technology_filter = technology_filter
         self.env = Environment(
             loader=FileSystemLoader(str(template_dir)),
             autoescape=select_autoescape(['html', 'xml']),
@@ -442,7 +444,7 @@ class TemplateEngine:
         role: DiocesanRole,
         onet_data: ONetOccupationData,
         template_name: str = "persona.md.j2",
-        openai_api_key: Optional[str] = None
+        openai_api_key: Optional[str] = None  # Kept for backward compatibility
     ) -> str:
         """Render a persona to markdown.
         
@@ -450,15 +452,15 @@ class TemplateEngine:
             role: Diocesan role
             onet_data: O*NET occupation data
             template_name: Template to use
-            openai_api_key: OpenAI API key for technology filtering
+            openai_api_key: OpenAI API key (deprecated, use shared technology_filter)
             
         Returns:
             Rendered markdown content
         """
         logger.info(f"Rendering persona for {role.role_title} using {template_name}")
         
-        # Create persona data
-        persona_data = PersonaData(role, onet_data, openai_api_key)
+        # Create persona data with shared technology filter for best persona-specific results
+        persona_data = PersonaData(role, onet_data, self.technology_filter)
         
         # Get template
         template = self.get_template(template_name)

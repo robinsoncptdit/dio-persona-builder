@@ -13,11 +13,19 @@ from rich.table import Table
 from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TimeElapsedColumn
 from dotenv import load_dotenv
 import openai
-from openai import ChatCompletion
 
 from .core.config import load_settings, Settings
 from .core.csv_loader import CSVLoader
 from .agents.persona_builder_agent import PersonaBuilderAgent
+from .core.exceptions import (
+    PersonaBuilderError,
+    ONetConnectionError,
+    ONetAPIError,
+    OpenAIConnectionError,
+    OpenAIAPIError,
+    TemplateError,
+    PersonaFileError
+)
 
 
 # Load environment variables
@@ -289,9 +297,19 @@ def generate(ctx, csv_path: Path, output_dir: Path, force: bool, role: Optional[
         mode = "reprocess"
 
     total_roles = len(agent.tasks)
-    step_count = 2 if mode == "reprocess" else 1
-
-    unprocessed_roles = []  # List to keep track of roles that couldn't be processed
+    # Always 3 phases: fetch/load, render, convert
+    total_phases = 3 if mode == "reprocess" else 2  # update mode skips fetch
+    
+    unprocessed_roles = []
+    openai_client = None
+    
+    # Initialize OpenAI client if API key is available
+    if settings.openai_api_key:
+        try:
+            openai_client = openai.OpenAI(api_key=settings.openai_api_key)
+        except Exception as e:
+            console.print(f"[yellow]Warning: Could not initialize OpenAI client: {e}[/yellow]")
+            console.print("[yellow]User persona conversion will be skipped.[/yellow]")
 
     with Progress(
         TextColumn("[bold blue]{task.description}"),
@@ -300,24 +318,41 @@ def generate(ctx, csv_path: Path, output_dir: Path, force: bool, role: Optional[
         TimeElapsedColumn(),
         console=console
     ) as progress:
-        overall = progress.add_task("Overall Progress", total=total_roles)
-        for task in agent.tasks:
-            role = task.role
-            role_task = progress.add_task(f"[magenta]{role.role_title}", total=step_count)
-            if mode == "reprocess":
-                # Fetch step
+        overall = progress.add_task("Overall Progress", total=total_roles * total_phases)
+        
+        # PHASE 1: Fetch O*NET data (reprocess mode only)
+        if mode == "reprocess":
+            for task in agent.tasks:
+                role = task.role
                 if not task.onet_data or force:
                     try:
                         data = agent.api_client.fetch_complete_occupation_data(role.onet_code)
                         agent._onet_cache[role.onet_code] = data
                         task.onet_data = data
                         task.status = "fetched"
+                    except ONetConnectionError as e:
+                        task.status = "fetch_failed"
+                        task.error = f"Connection error: {e.message}"
+                        logger.error(f"Connection failed for {role.onet_code}: {e}")
+                    except ONetAPIError as e:
+                        task.status = "fetch_failed"
+                        task.error = f"API error: {e.message} (Status: {e.status_code})"
+                        logger.error(f"API error for {role.onet_code}: {e}")
                     except Exception as e:
-                        task.status = "failed"
-                        task.error = str(e)
-                progress.update(role_task, description=f"[cyan]Fetching[/cyan] {role.role_title}", advance=1)
-                # Render step
-                if task.onet_data and task.status != "failed":
+                        task.status = "fetch_failed"
+                        task.error = f"Unexpected error: {e}"
+                        logger.error(f"Unexpected error fetching {role.onet_code}: {e}")
+                else:
+                    task.status = "fetched"
+                progress.update(overall, description=f"[cyan]Fetching O*NET data for {role.role_title}[/cyan]", advance=1)
+        
+        # PHASE 2: Render occupational personas
+        for task in agent.tasks:
+            role = task.role
+            
+            if mode == "reprocess":
+                # Generate new occupational persona
+                if task.status == "fetched" and task.onet_data:
                     try:
                         content = agent.template_engine.render_persona(
                             role=role,
@@ -328,49 +363,111 @@ def generate(ctx, csv_path: Path, output_dir: Path, force: bool, role: Optional[
                         occ_path = occupational_dir / filename
                         occ_path.write_text(content, encoding='utf-8')
                         task.output_path = occ_path
+                        task.status = "rendered"
+                    except TemplateError as e:
+                        task.status = "render_failed"
+                        task.error = f"Template error: {e.message}"
+                        logger.error(f"Template error for {role.role_title}: {e}")
+                    except (OSError, IOError) as e:
+                        task.status = "render_failed"
+                        task.error = f"File system error: {e}"
+                        logger.error(f"File write error for {role.role_title}: {e}")
                     except Exception as e:
-                        task.status = "failed"
-                        task.error = str(e)
+                        task.status = "render_failed"
+                        task.error = f"Unexpected error: {e}"
+                        logger.error(f"Unexpected render error for {role.role_title}: {e}")
+                elif task.status == "fetch_failed":
+                    # Skip rendering if fetch failed
+                    pass
             else:
-                # Update: reuse existing occupational persona
+                # Update mode: load existing occupational persona
                 occ_fn = settings.output_config.file_pattern.format(role_slug=role.role_slug)
                 occ_path = occupational_dir / occ_fn
-
-                # Check if the file exists, if not, log and skip
-                if not occ_path.exists():
-                    console.print(f"[yellow]Skipping {role.role_slug} as the file does not exist.[/yellow]")
+                
+                if occ_path.exists():
+                    task.output_path = occ_path
+                    task.status = "rendered"
+                else:
+                    task.status = "render_failed"
+                    task.error = "Occupational persona file not found"
                     unprocessed_roles.append(role.role_slug)
-                    continue
-
-                content = occ_path.read_text(encoding='utf-8')
-                task.output_path = occ_path
-            # Conversion step
+            
+            progress.update(overall, description=f"[green]Rendering occupational persona for {role.role_title}[/green]", advance=1)
+        
+        # PHASE 3: Convert to user personas
+        if openai_client:
+            prompt_file = Path(__file__).parent / "prompts" / "conversion-prompt.md"
             try:
-                prompt_file = Path(__file__).parent / "prompts" / "conversion-prompt.md"
                 prompt_content = prompt_file.read_text(encoding="utf-8")
                 system_part, user_part = prompt_content.split("⇢ **INPUT**", 1)
-                wrapped_input = "⇢ **INPUT**\n" + content + "\n**END INPUT**"
-                messages = [
-                    {"role": "system", "content": system_part.strip()},
-                    {"role": "user", "content": user_part.replace("{{RAW_PERSONA_MD}}", wrapped_input)}
-                ]
-                openai.api_key = settings.openai_api_key
-                response = ChatCompletion.acreate(
-                    model="gpt-3.5-turbo",
-                    messages=messages,
-                    max_tokens=1500
-                )
-                content = response['choices'][0]['message']['content']
-                filename = settings.output_config.file_pattern.format(role_slug=role.role_slug)
-                occ_path = occupational_dir / filename
-                occ_path.write_text(content, encoding='utf-8')
-                task.status = "completed"
             except Exception as e:
-                task.status = "failed"
-                task.error = str(e)
-            progress.update(role_task, description=f"[green]Rendering[/green] {role.role_title}", advance=1)
-            progress.update(overall, advance=1)
-            progress.remove_task(role_task)
+                console.print(f"[red]Error reading conversion prompt: {e}[/red]")
+                prompt_content = None
+            
+            for task in agent.tasks:
+                role = task.role
+                
+                if task.status == "rendered" and task.output_path and prompt_content:
+                    try:
+                        # Read occupational persona content
+                        occ_content = task.output_path.read_text(encoding='utf-8')
+                        
+                        # Prepare OpenAI messages
+                        wrapped_input = "⇢ **INPUT**\n" + occ_content + "\n**END INPUT**"
+                        messages = [
+                            {"role": "system", "content": system_part.strip()},
+                            {"role": "user", "content": user_part.replace("{{RAW_PERSONA_MD}}", wrapped_input)}
+                        ]
+                        
+                        # Call OpenAI
+                        response = openai_client.chat.completions.create(
+                            model="gpt-3.5-turbo",
+                            messages=messages,
+                            max_tokens=1500
+                        )
+                        
+                        # Write user persona
+                        user_content = response.choices[0].message.content
+                        user_filename = f"user_persona_{role.role_slug}.md"
+                        user_path = user_dir / user_filename
+                        user_path.write_text(user_content, encoding='utf-8')
+                        
+                        task.status = "completed"
+                        
+                    except openai.AuthenticationError as e:
+                        task.status = "conversion_failed"
+                        task.error = f"OpenAI authentication failed: Check API key in .env file"
+                        logger.error(f"OpenAI auth error for {role.role_title}: {e}")
+                    except openai.RateLimitError as e:
+                        task.status = "conversion_failed"
+                        task.error = f"OpenAI rate limit exceeded: {e}"
+                        logger.error(f"OpenAI rate limit for {role.role_title}: {e}")
+                    except openai.APIError as e:
+                        task.status = "conversion_failed"
+                        task.error = f"OpenAI API error: {e}"
+                        logger.error(f"OpenAI API error for {role.role_title}: {e}")
+                    except (OSError, IOError) as e:
+                        task.status = "conversion_failed"
+                        task.error = f"File system error writing user persona: {e}"
+                        logger.error(f"File write error for user persona {role.role_title}: {e}")
+                    except Exception as e:
+                        task.status = "conversion_failed"
+                        task.error = f"Unexpected conversion error: {e}"
+                        logger.error(f"Unexpected conversion error for {role.role_title}: {e}")
+                else:
+                    # Skip conversion if rendering failed or no OpenAI
+                    if task.status == "rendered":
+                        task.status = "conversion_skipped"
+                        task.error = "OpenAI conversion unavailable"
+                
+                progress.update(overall, description=f"[blue]Converting to user persona for {role.role_title}[/blue]", advance=1)
+        else:
+            # Skip conversion phase entirely
+            for task in agent.tasks:
+                if task.status == "rendered":
+                    task.status = "conversion_skipped"
+                    task.error = "OpenAI API key not provided"
+                progress.update(overall, advance=1)
 
     # Summary
     summary = agent.get_task_summary()

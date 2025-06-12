@@ -4,11 +4,16 @@ A lightweight Python CLI tool that automates the generation of user personas for
 
 ## Overview
 
-The Diocesan Persona Builder streamlines persona creation by:
+The Diocesan Persona Builder streamlines persona creation through a **robust two-stage pipeline**:
 
-1. **Loading diocesan roles** from a CSV file mapped to O*NET occupation codes
-2. **Fetching detailed occupational data** from the O*NET Web Services API (skills, tasks, knowledge, work context)
-3. **Generating structured persona profiles** in Markdown format using Jinja2 templates
+1. **Stage 1 - Occupational Personas**: Load diocesan roles from CSV → Fetch O*NET occupational data → Generate detailed occupational personas
+2. **Stage 2 - User Personas**: Transform occupational personas → Convert via OpenAI ChatGPT → Generate UX-focused user personas
+
+**Key Benefits:**
+- **Persona-specific technology recommendations** using shared OpenAI filtering
+- **Robust error handling** with specific, actionable error messages  
+- **Reliable two-stage output** preserving both occupational and user persona formats
+- **Production-ready architecture** with comprehensive logging and progress tracking
 
 Built with an agent-first architecture using modern Python frameworks including Pydantic for data validation, Click for CLI interface, and comprehensive error handling with retry logic.
 
@@ -64,6 +69,7 @@ Built with an agent-first architecture using modern Python frameworks including 
    ```env
    ONET_USERNAME=your_onet_username
    ONET_PASSWORD=your_onet_password
+   OPENAI_API_KEY=your_openai_api_key
    ```
    # Optional environment variables
    LOG_LEVEL=INFO        # Default logging verbosity
@@ -106,9 +112,18 @@ diocesan-persona-builder generate data/roles.csv --role parish-secretary --outpu
 ```
 
 This will:
-- Load all roles from the CSV
-- Fetch occupational data from O*NET for each unique code
-- Generate markdown persona files in the output directory
+- **Phase 1**: Load all roles from CSV and fetch O*NET occupational data
+- **Phase 2**: Generate occupational persona files (`occupational/persona_<role>.md`)  
+- **Phase 3**: Convert to user personas via OpenAI API (`user/user_persona_<role>.md`)
+
+**Output Structure:**
+```
+output/
+├── occupational/          # Stage 1: Detailed occupational personas
+│   └── persona_*.md
+└── user/                  # Stage 2: UX-focused user personas
+    └── user_persona_*.md
+```
 
 ## CLI Commands
 
@@ -159,18 +174,28 @@ Display configuration and system information.
 diocesan-persona-builder info
 ```
 
-## Generated Persona Format
+## Generated Persona Formats
 
-Each persona includes:
-
+### **Stage 1: Occupational Personas** (`occupational/persona_*.md`)
+Each occupational persona includes:
 - **Overview**: Role title, setting, O*NET mapping
-- **Role Summary**: Occupation description from O*NET
-- **Key Tasks**: Primary responsibilities for the role
-- **Essential Skills**: Top skills ranked by importance
-- **Required Knowledge**: Key knowledge areas with importance scores
-- **Work Context**: Interaction patterns, schedule, work environment
+- **Role Summary**: Occupation description from O*NET  
+- **Key Tasks**: Primary responsibilities ranked by importance
+- **Essential Skills**: Top skills with importance scores
+- **Required Knowledge**: Key knowledge areas with ratings
+- **Technology Skills**: **Persona-specific** technology recommendations
+- **Work Context**: Interaction patterns, schedule, environment
 - **Work Styles**: Behavioral characteristics and motivations
-- **User Persona Profile**: Demographics, goals, pain points, technology needs
+
+### **Stage 2: User Personas** (`user/user_persona_*.md`)
+Each user persona includes UX-focused sections:
+- **Background & Demographics**: Role, age, education, experience
+- **Behaviors & Context of Use**: Devices, frequency, technical fluency
+- **Needs & Pain Points**: User needs and frustrations
+- **Goals & Objectives**: Short-term and long-term goals
+- **Mental Models & Attitudes**: How they think about technology
+- **Scenarios**: Key user journey highlights
+- **Key Quote**: Representative user voice
 
 Example output snippet:
 ```markdown
@@ -302,23 +327,33 @@ diocesan_persona_builder/
 ### Common Issues
 
 1. **O*NET API Authentication Errors**
-   - Verify credentials in `.env` file
-   - Check O*NET account status
-   - Test with `diocesan-persona-builder info`
+   ```
+   Error: "Authentication failed - check O*NET username/password in .env file"
+   ```
+   - Verify `ONET_USERNAME` and `ONET_PASSWORD` in `.env` file
+   - Test connection with `diocesan-persona-builder info`
 
-2. **CSV Validation Failures**
-   - Ensure all required columns are present
+2. **OpenAI API Issues**
+   ```
+   Error: "OpenAI authentication failed: Check API key in .env file"
+   ```
+   - Verify `OPENAI_API_KEY` in `.env` file
+   - Check API quota at [OpenAI Platform](https://platform.openai.com/usage)
+
+3. **CSV Validation Failures**
+   ```
+   Error: "CSV validation failed: Missing required columns"
+   ```
+   - Ensure all required columns are present: `role_title`, `setting`, `onet_code`, `onet_title`, `mapping_notes`
    - Check O*NET code format (XX-XXXX.XX)
-   - Validate data types
 
-3. **Template Rendering Errors**
-   - Check Jinja2 template syntax
-   - Verify template file permissions
-   - Review template variables
-
-4. **Rate Limiting**
-   - Default rate limiting: 0.5 seconds between requests
-   - Increase `rate_limit_delay` in configuration if needed
+4. **File System Errors**
+   ```
+   Error: "File system error writing user persona"
+   ```
+   - Check output directory permissions
+   - Ensure sufficient disk space
+   - Verify output path is writable
 
 ### Logging
 

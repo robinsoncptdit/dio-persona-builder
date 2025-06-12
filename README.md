@@ -17,8 +17,9 @@ Built with an agent-first architecture using modern Python frameworks including 
 - 🏛️ **Diocesan-specific**: Tailored for Catholic Church environments (Parishes, Schools, Pastoral Centers)
 - 🌐 **O*NET Integration**: Authoritative occupational data from the U.S. Department of Labor
 - 🤖 **Agent-based Architecture**: Modular design using CrewAI/PydanticAI patterns
-- 📊 **Rich CLI Interface**: Beautiful terminal output with progress tracking
-- 🔄 **Robust Error Handling**: Retry logic, rate limiting, and comprehensive logging
+- 📊 **Rich CLI Interface**: Beautiful terminal output with nested per-role & overall progress bars
+- 🎯 **Single-role Generation**: Regenerate/update one persona via `--role` flag
+- 📁 **Persistent File Logging**: Timestamped log files via `--log-file` or default `logs/run_<timestamp>.log`
 - 🧪 **Fully Tested**: Comprehensive unit test coverage
 - 📝 **Flexible Templates**: Customizable Jinja2 templates for persona output
 
@@ -64,6 +65,9 @@ Built with an agent-first architecture using modern Python frameworks including 
    ONET_USERNAME=your_onet_username
    ONET_PASSWORD=your_onet_password
    ```
+   # Optional environment variables
+   LOG_LEVEL=INFO        # Default logging verbosity
+   LOG_FILE=logs/run_<timestamp>.log  # Optional path to write logs
 
 ## Quick Start
 
@@ -96,6 +100,10 @@ diocesan-persona-builder validate data/roles.csv
 ```bash
 diocesan-persona-builder generate data/roles.csv --output-dir output/personas
 ```
+Or to target a single role:
+```bash
+diocesan-persona-builder generate data/roles.csv --role parish-secretary --output-dir output/personas
+```
 
 This will:
 - Load all roles from the CSV
@@ -103,6 +111,10 @@ This will:
 - Generate markdown persona files in the output directory
 
 ## CLI Commands
+
+All commands support global options:
+- `--log-level`: Logging verbosity (default: INFO)
+- `--log-file`: Path to a log file (defaults to logs/run_<timestamp>.log)
 
 ### `validate <csv_path>`
 Validate CSV file structure and display summary.
@@ -129,15 +141,16 @@ Options:
 - `--force`: Force refresh of cached data
 
 ### `generate <csv_path>`
-Complete pipeline: load CSV, fetch O*NET data, generate personas.
+Complete pipeline: load CSV, fetch O*NET data, generate personas (with enhanced progress bars).
 
 ```bash
-diocesan-persona-builder generate data/roles.csv --output-dir output --force
+diocesan-persona-builder generate data/roles.csv --output-dir output --force --role parish-secretary
 ```
 
 Options:
 - `--output-dir`: Output directory for persona files (default: `output`)
 - `--force`: Force refresh of cached O*NET data
+- `--role`: Only generate/update this one role (slug or exact title)
 
 ### `info`
 Display configuration and system information.
@@ -200,6 +213,10 @@ output_config:
   output_dir: "output"
   template_dir: "templates"
   file_pattern: "persona_{role_slug}.md"
+
+# Logging Configuration
+log_level: "INFO"
+log_file: null  # Optional path to persist logs
 ```
 
 ## Template Customization

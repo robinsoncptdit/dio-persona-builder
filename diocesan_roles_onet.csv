@@ -1,0 +1,123 @@
+role_title,setting,onet_code,onet_title,mapping_notes
+Bishop,Pastoral Center,21-2011.00,Clergy,
+Auxiliary Bishop,Pastoral Center,21-2011.00,Clergy,
+Vicar General,Pastoral Center,21-2011.00,Clergy,
+Chancellor,Pastoral Center,11-3012.00,Administrative Services Managers,Closest fit for top record/archives administrator
+Judicial Vicar,Pastoral Center,23-1011.00,Lawyers,Church court judge; mapped to Lawyers
+Canon Lawyer,Pastoral Center,23-1011.00,Lawyers,
+Defender of the Bond,Pastoral Center,23-1011.00,Lawyers,Tribunal advocate
+Tribunal Judge,Pastoral Center,23-1011.00,Lawyers,
+Case Instructor,Pastoral Center,23-1011.00,Lawyers,
+Chief Operating Officer,Pastoral Center,11-1011.00,Chief Executives,
+Chief Financial Officer,Pastoral Center,11-3031.00,Financial Managers,
+Controller,Pastoral Center,11-3031.00,Financial Managers,
+Accounting Manager,Pastoral Center,11-3031.00,Financial Managers,
+Payroll Specialist,Pastoral Center,43-3051.00,Payroll and Timekeeping Clerks,
+Risk-Insurance Manager,Pastoral Center,13-2054.00,Financial Risk Specialists,
+HR Director,Pastoral Center,11-3121.00,Human Resources Managers,
+Benefits Manager,Pastoral Center,13-1141.00,"Compensation, Benefits, and Job Analysis Specialists",
+Talent & Training Specialist,Pastoral Center,13-1151.00,Training and Development Specialists,
+Director of Communications,Pastoral Center,11-2032.00,Public Relations Managers,
+Digital Content Manager,Pastoral Center,27-3031.00,Public Relations Specialists,Approximate match to digital content
+Press Officer,Pastoral Center,27-3031.00,Public Relations Specialists,
+Graphic Designer,Pastoral Center,27-1024.00,Graphic Designers,
+Director of IT,Pastoral Center,11-3021.00,Computer and Information Systems Managers,
+Systems Administrator,Pastoral Center,15-1244.00,Network and Computer Systems Administrators,
+Network Administrator,Pastoral Center,15-1244.00,Network and Computer Systems Administrators,
+Application Support Analyst,Pastoral Center,15-1232.00,"Software Developers, Applications",Closest match for application support
+Chief Development Officer,Pastoral Center,11-2032.00,Public Relations and Fundraising Managers,
+Grants Officer,Pastoral Center,13-1131.00,Fundraisers,
+CRM Database Manager,Pastoral Center,15-1242.00,Database Administrators,
+Director of Faith Formation,Pastoral Center,21-2021.00,"Directors, Religious Activities and Education",
+RCIA Coordinator,Pastoral Center,21-2021.00,"Directors, Religious Activities and Education",
+Catechetical Specialist,Pastoral Center,21-2021.00,"Directors, Religious Activities and Education",
+Director of Youth Ministry,Pastoral Center,21-2021.00,"Directors, Religious Activities and Education",
+Campus Minister (Diocesan),Pastoral Center,21-2021.00,"Directors, Religious Activities and Education",
+Retreat Coordinator,Pastoral Center,21-2021.00,"Directors, Religious Activities and Education",
+Vicar for Clergy,Pastoral Center,21-2011.00,Clergy,
+Vocations Director,Pastoral Center,21-2021.00,"Directors, Religious Activities and Education",
+Seminarian Liaison,Pastoral Center,21-2021.00,"Directors, Religious Activities and Education",Approximate
+Diocesan Liturgist,Pastoral Center,27-2041.00,Music Directors and Composers,Closest fit for liturgy/music coordination
+Master of Ceremonies,Pastoral Center,27-2012.00,Producers and Directors,Approximate
+Music and Arts Coordinator,Pastoral Center,27-2041.00,Music Directors and Composers,
+Facilities Director,Pastoral Center,11-3012.00,Administrative Services Managers,
+Construction Projects Manager,Pastoral Center,11-9021.00,Construction Managers,
+Safety Officer,Pastoral Center,29-9011.00,Occupational Health and Safety Specialists,
+General Counsel,Pastoral Center,23-1011.00,Lawyers,
+Contract Specialist,Pastoral Center,13-1023.00,"Purchasing Agents, Except Wholesale, Retail, and Farm Products",
+Livestream Producer,Pastoral Center,27-2012.00,Producers and Directors,
+Digital Missionary,Pastoral Center,27-3031.00,Public Relations Specialists,Approximate
+Diocese Executive Assistant,Parish,43-6014.00,Secretaries and Administrative Assistants,
+Diocese Administrative Assistant,Parish,43-6014.00,Secretaries and Administrative Assistants,
+Pastor,Parish,21-2011.00,Clergy,
+Parish Administrator,Parish,21-2011.00,Clergy,Priest acting as administrator
+Parochial Vicar,Parish,21-2011.00,Clergy,
+Permanent Deacon,Parish,21-2011.00,Clergy,
+Pastoral Associate,Parish,21-2021.00,"Directors, Religious Activities and Education",
+Sacristan,Parish,39-3091.00,"Entertainment Attendants and Related Workers, All Other",Approximate liturgical attendant
+Liturgist (Parish),Parish,27-2041.00,Music Directors and Composers,Approximate
+Director of Religious Education,Parish,21-2021.00,"Directors, Religious Activities and Education",
+Youth Minister,Parish,21-2021.00,"Directors, Religious Activities and Education",
+Music Director,Parish,27-2041.00,Music Directors and Composers,
+Choir Director,Parish,27-2041.00,Music Directors and Composers,
+Cantor,Parish,27-2042.00,Musicians and Singers,
+Parish Business Manager,Parish,11-3012.00,Administrative Services Managers,
+Parish Bookkeeper,Parish,43-3031.00,"Bookkeeping, Accounting, and Auditing Clerks",
+Parish Office Administrator,Parish,43-6014.00,Secretaries and Administrative Assistants,
+Communications Coordinator,Parish,27-3031.00,Public Relations Specialists,
+Volunteer Coordinator,Parish,11-9151.00,Social and Community Service Managers,Approximate
+Ministry Scheduler,Parish,43-6014.00,Secretaries and Administrative Assistants,Approximate scheduling clerk
+Facilities Manager (Parish),Parish,11-3012.00,Administrative Services Managers,
+Maintenance Technician,Parish,49-9071.00,"Maintenance and Repair Workers, General",
+Groundskeeper,Parish,37-3011.00,Landscaping and Groundskeeping Workers,
+Custodian,Parish,37-2011.00,Janitors and Cleaners,
+Extraordinary Minister of Holy Communion,Parish,21-2011.00,Clergy,Volunteer liturgical minister
+Lector,Parish,27-3091.00,"Entertainers and Performers, Sports and Related Workers, All Other",Approximate public reader
+Usher,Parish,39-3031.00,"Ushers, Lobby Attendants, and Ticket Takers",
+Altar Server,Parish,39-3091.00,"Entertainment Attendants and Related Workers, All Other",
+Superintendent of Schools,School,11-9032.00,"Education Administrators, Kindergarten through Secondary",
+Principal,School,11-9032.00,"Education Administrators, Kindergarten through Secondary",
+Assistant Principal,School,11-9032.00,"Education Administrators, Kindergarten through Secondary",
+Dean of Students,School,11-9032.00,"Education Administrators, Kindergarten through Secondary",
+Classroom Teacher,School,25-2021.00,"Elementary School Teachers, Except Special Education",
+Special Education Teacher,School,25-2052.00,"Special Education Teachers, Middle School",Representative special ed
+Religion Teacher,School,25-2021.00,"Elementary School Teachers, Except Special Education",Approximate
+Librarian,School,25-4022.00,Librarians and Media Collections Specialists,
+Guidance Counselor,School,21-1012.00,"Educational, Guidance, and Career Counselors and Advisors",
+School Psychologist,School,19-3031.00,"Clinical, Counseling, and School Psychologists",
+Campus Minister (School),School,21-2021.00,"Directors, Religious Activities and Education",
+Athletic Director,School,11-9039.00,"Education Administrators, All Other",
+Coach,School,27-2022.00,Coaches and Scouts,
+School Nurse,School,29-1141.00,Registered Nurses,
+Business Manager (School),School,11-3012.00,Administrative Services Managers,
+Admissions Director,School,11-9033.00,"Education Administrators, Postsecondary",Approximate K-12 admissions head
+Advancement Officer,School,11-2032.00,Public Relations and Fundraising Managers,
+Technology Coordinator,School,15-1244.00,Network and Computer Systems Administrators,
+Administrative Assistant,School,43-6014.00,Secretaries and Administrative Assistants,
+Facilities Supervisor,School,11-3012.00,Administrative Services Managers,
+Custodian (School),School,37-2011.00,Janitors and Cleaners,
+Cafeteria Manager,School,11-9051.00,Food Service Managers,
+Cafeteria Worker,School,35-2021.00,Food Preparation Workers,
+Bus Driver,School,53-3022.00,"Bus Drivers, School",
+Executive Director,Ministry,11-1011.00,Chief Executives,
+Chief Program Officer,Ministry,11-9151.00,Social and Community Service Managers,
+Finance Director,Ministry,11-3031.00,Financial Managers,
+Case Manager,Ministry,21-1093.00,Social and Human Service Assistants,
+Licensed Social Worker,Ministry,21-1021.00,"Child, Family, and School Social Workers",
+Shelter Advocate,Ministry,21-1021.00,"Child, Family, and School Social Workers",Approximate
+Housing Navigator,Ministry,21-1023.00,Mental Health and Substance Abuse Social Workers,Approximate
+Food Pantry Coordinator,Ministry,11-9151.00,Social and Community Service Managers,Approximate
+Immigration Specialist,Ministry,23-2011.00,Paralegals and Legal Assistants,Approximate legal aid
+Disaster Response Coordinator,Ministry,11-9161.00,Emergency Management Directors,
+Chaplain (Hospital),Ministry,21-2011.00,Clergy,
+Prison Chaplain,Ministry,21-2011.00,Clergy,
+Spiritual Care Coordinator,Ministry,21-2011.00,Clergy,Approximate
+Volunteer Coordinator (Ministry),Ministry,11-9151.00,Social and Community Service Managers,
+Community Organizer,Ministry,21-1099.00,"Community and Social Service Specialists, All Other",
+Donor Relations Officer,Ministry,13-1131.00,Fundraisers,
+Grant Writer,Ministry,27-3043.00,Writers and Authors,Approximate writing role
+Marketing Specialist,Ministry,13-1161.00,Market Research Analysts and Marketing Specialists,
+Shelter Manager,Ministry,11-9151.00,Social and Community Service Managers,
+Driver,Ministry,53-3058.00,"Passenger Vehicle Drivers, Except Bus",
+Logistics Aide,Ministry,53-7065.00,Stockers and Order Fillers,Approximate logistics support
+Outreach Liaison,Ministry,21-1099.00,"Community and Social Service Specialists, All Other",

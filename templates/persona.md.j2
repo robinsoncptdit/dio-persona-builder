@@ -1,0 +1,158 @@
+# Persona: {{ role_title }}
+
+## Overview
+
+**Role Title:** {{ role_title }}  
+**Setting:** {{ setting }}  
+**O*NET Code:** {{ onet_code }}  
+**O*NET Title:** {{ onet_title }}  
+{% if mapping_notes %}
+**Mapping Notes:** {{ mapping_notes }}  
+{% endif %}
+
+## Role Summary
+
+{{ occupation_description }}
+
+## Key Tasks and Responsibilities
+
+{% for task in key_tasks %}
+- {{ task }}
+{% endfor %}
+
+## Essential Skills
+
+The following skills are most important for success in this role:
+
+{% for skill in top_skills %}
+### {{ loop.index }}. {{ skill.name }}
+- **Importance:** {{ skill.importance|round }}% ({{ skill.importance_label }})
+{% endfor %}
+
+## Required Knowledge
+
+Key knowledge areas for this role include:
+
+{% for knowledge in top_knowledge %}
+### {{ loop.index }}. {{ knowledge.name }}
+- **Importance:** {{ knowledge.importance|round }}% ({{ knowledge.importance_label }})
+{% endfor %}
+
+## Essential Abilities
+
+Key abilities required for success in this role:
+
+{% for ability in top_abilities %}
+### {{ loop.index }}. {{ ability.name }}
+- **Importance:** {{ ability.importance|round }}% ({{ ability.importance_label }})
+{% endfor %}
+
+## Personality and Interests
+
+Important personality traits and interests for this role:
+
+{% for trait in personality_traits %}
+### {{ loop.index }}. {{ trait.name }}
+- **Importance:** {{ trait.importance|round }}% ({{ trait.importance_label }})
+{% endfor %}
+
+## Technology Skills
+
+Technology and tools commonly used in this role:
+
+{% if technology_skills %}
+{% for tech in technology_skills %}
+### {{ loop.index }}. {{ tech.name }}
+{% if tech.importance %}
+- **Relevance:** {{ tech.importance|round }}%
+{% endif %}
+{% endfor %}
+{% else %}
+- Standard office software and communication tools
+- Database and information management systems
+- Web-based applications and platforms
+{% endif %}
+
+## Education Requirements
+
+Education and training typically required for this role:
+
+{% if education_requirements %}
+{% for edu in education_requirements %}
+### {{ loop.index }}. {{ edu.name }}
+- **Importance:** {{ edu.importance|round }}% ({{ edu.importance_label }})
+{% endfor %}
+{% else %}
+- High school diploma or equivalent
+- Relevant certifications or training
+- On-the-job training and development
+{% endif %}
+
+## Work Context
+
+### Contact with Others
+{% if work_context.contact_with_others %}
+{% for item in work_context.contact_with_others %}
+- {{ item.name }}: {{ item.value|round }}%
+{% endfor %}
+{% else %}
+- Standard office interactions
+{% endif %}
+
+### Work Schedule
+{% if work_context.work_schedule %}
+{% for item in work_context.work_schedule %}
+- {{ item.name }}: {{ item.value|round }}%
+{% endfor %}
+{% else %}
+- Regular work hours
+{% endif %}
+
+### Work Setting
+{% if work_context.work_setting %}
+{% for item in work_context.work_setting %}
+- {{ item.name }}: {{ item.value|round }}%
+{% endfor %}
+{% else %}
+- Typical office environment
+{% endif %}
+
+## Work Styles and Motivations
+
+The following work styles are particularly important for this role:
+
+{% for style in work_styles %}
+### {{ style.name }}
+- **Importance:** {{ style.importance|round }}%
+- {{ style.description }}
+{% endfor %}
+
+## User Persona Profile
+
+### Demographics
+- **Education:** Varies based on specific role requirements
+- **Experience:** Relevant experience in {{ setting }} environment
+- **Technical Proficiency:** Comfortable with standard office software and systems
+
+### Goals and Motivations
+- Serve the diocesan community effectively
+- Support the mission of the Church in {{ setting }}
+- Collaborate with colleagues to achieve organizational objectives
+- Maintain high standards of professional excellence
+
+### Pain Points and Challenges
+- Balancing multiple responsibilities and priorities
+- Adapting to evolving technology and systems
+- Meeting diverse stakeholder expectations
+- Managing resources effectively
+
+### Technology Needs
+- Reliable communication and collaboration tools
+- Efficient data management systems
+- User-friendly interfaces for daily tasks
+- Mobile access for flexibility when needed
+
+---
+
+*Generated on: {{ generated_at }}*  
+*Source: O*NET Database and diocesan role mapping*

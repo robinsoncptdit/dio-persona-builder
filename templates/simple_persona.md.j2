@@ -1,0 +1,45 @@
+# {{ role_title }}
+
+**Setting:** {{ setting }}  
+**O*NET Code:** {{ onet_code }}
+
+## Summary
+{{ occupation_description }}
+
+## Key Responsibilities
+{% for task in key_tasks[:8] %}
+- {{ task }}
+{% endfor %}
+
+## Essential Skills
+{% for skill in top_skills[:6] %}
+- **{{ skill.name }}**: {{ skill.importance|round }}% importance
+{% endfor %}
+
+## Required Knowledge
+{% for knowledge in top_knowledge[:5] %}
+- **{{ knowledge.name }}**: {{ knowledge.importance|round }}% importance  
+{% endfor %}
+
+## Work Environment
+{% if work_context.contact_with_others %}
+**Contact with Others:**
+{% for item in work_context.contact_with_others %}
+- {{ item.name }}: {{ item.value|round }}%
+{% endfor %}
+{% endif %}
+
+{% if work_context.work_setting %}
+**Work Setting:**
+{% for item in work_context.work_setting %}
+- {{ item.name }}: {{ item.value|round }}%
+{% endfor %}
+{% endif %}
+
+## Key Work Styles
+{% for style in work_styles[:5] %}
+- **{{ style.name }}** ({{ style.importance|round }}%): {{ style.description }}
+{% endfor %}
+
+---
+*Generated: {{ generated_at }}*

@@ -1,0 +1,209 @@
+# Persona: Application Support Analyst
+
+## Overview
+
+**Role Title:** Application Support Analyst  
+**Setting:** Pastoral Center  
+**O*NET Code:** 15-1232.00  
+**O*NET Title:** Software Developers, Applications  
+**Mapping Notes:** Closest match for application support  
+
+## Role Summary
+
+Provide technical assistance to computer users. Answer questions or resolve computer problems for clients in person, via telephone, or electronically. May provide assistance concerning the use of computer hardware and software, including printing, installation, word processing, electronic mail, and operating systems.
+
+## Key Tasks and Responsibilities
+
+- Oversee the daily performance of computer systems.
+- Set up equipment for employee use, performing or ensuring proper installation of cables, operating systems, or appropriate software.
+- Read technical manuals, confer with users, or conduct computer diagnostics to investigate and resolve problems or to provide technical assistance and support.
+- Answer user inquiries regarding computer software or hardware operation to resolve problems.
+- Install and perform minor repairs to hardware, software, or peripheral equipment, following design or installation specifications.
+- Confer with staff, users, and management to establish requirements for new systems or modifications.
+- Enter commands and observe system functioning to verify correct operations and detect errors.
+- Maintain records of daily data communication transactions, problems and remedial actions taken, or installation activities.
+- Refer major hardware or software problems or defective products to vendors or technicians for service.
+- Prepare evaluations of software or hardware, and recommend improvements or upgrades.
+
+## Essential Skills
+
+The following skills are most important for success in this role:
+
+### 1. Active Listening
+- **Importance:** 75.0% (Very Important)
+### 2. Reading Comprehension
+- **Importance:** 75.0% (Very Important)
+### 3. Speaking
+- **Importance:** 75.0% (Very Important)
+### 4. Critical Thinking
+- **Importance:** 69.0% (Very Important)
+### 5. Complex Problem Solving
+- **Importance:** 66.0% (Very Important)
+### 6. Writing
+- **Importance:** 63.0% (Important)
+### 7. Judgment and Decision Making
+- **Importance:** 56.0% (Important)
+### 8. Active Learning
+- **Importance:** 53.0% (Important)
+### 9. Learning Strategies
+- **Importance:** 53.0% (Important)
+### 10. Monitoring
+- **Importance:** 53.0% (Important)
+
+## Required Knowledge
+
+Key knowledge areas for this role include:
+
+### 1. Computers and Electronics
+- **Importance:** 98.0% (Extremely Important)
+### 2. Customer and Personal Service
+- **Importance:** 78.0% (Very Important)
+### 3. Telecommunications
+- **Importance:** 71.0% (Very Important)
+### 4. English Language
+- **Importance:** 70.0% (Very Important)
+### 5. Education and Training
+- **Importance:** 68.0% (Very Important)
+### 6. Mechanical
+- **Importance:** 67.0% (Very Important)
+### 7. Engineering and Technology
+- **Importance:** 66.0% (Very Important)
+### 8. Administration and Management
+- **Importance:** 65.0% (Very Important)
+### 9. Administrative
+- **Importance:** 61.0% (Important)
+### 10. Communications and Media
+- **Importance:** 54.0% (Important)
+
+## Essential Abilities
+
+Key abilities required for success in this role:
+
+### 1. Oral Comprehension
+- **Importance:** 75.0% (Very Important)
+### 2. Oral Expression
+- **Importance:** 75.0% (Very Important)
+### 3. Written Comprehension
+- **Importance:** 75.0% (Very Important)
+### 4. Near Vision
+- **Importance:** 72.0% (Very Important)
+### 5. Written Expression
+- **Importance:** 72.0% (Very Important)
+### 6. Deductive Reasoning
+- **Importance:** 66.0% (Very Important)
+### 7. Information Ordering
+- **Importance:** 66.0% (Very Important)
+### 8. Problem Sensitivity
+- **Importance:** 66.0% (Very Important)
+### 9. Speech Clarity
+- **Importance:** 66.0% (Very Important)
+### 10. Speech Recognition
+- **Importance:** 66.0% (Very Important)
+
+## Personality and Interests
+
+Important personality traits and interests for this role:
+
+### 1. Conventional
+- **Importance:** 82.0% (Extremely Important)
+### 2. Realistic
+- **Importance:** 51.0% (Important)
+### 3. Investigative
+- **Importance:** 48.0% (Somewhat Important)
+### 4. Social
+- **Importance:** 39.0% (Somewhat Important)
+### 5. Enterprising
+- **Importance:** 22.0% (Not Important)
+### 6. Artistic
+- **Importance:** 0% (Not Important)
+
+## Technology Skills
+
+Technology and tools commonly used in this role:
+
+### 1. MySQL
+### 2. ServiceNow
+### 3. Apple iOS
+### 4. Microsoft Windows Server
+### 5. Microsoft PowerShell
+### 6. C#
+### 7. jQuery
+### 8. GitHub
+
+## Education Requirements
+
+Education and training typically required for this role:
+
+- High school diploma or equivalent
+- Relevant certifications or training
+- On-the-job training and development
+
+## Work Context
+
+### Contact with Others
+- Standard office interactions
+
+### Work Schedule
+- Regular work hours
+
+### Work Setting
+- Typical office environment
+
+## Work Styles and Motivations
+
+The following work styles are particularly important for this role:
+
+### Attention to Detail
+- **Importance:** 90.0%
+- Careful attention to detail and thoroughness
+### Integrity
+- **Importance:** 90.0%
+- Honest and ethical behavior
+### Dependability
+- **Importance:** 89.0%
+- Reliable, responsible, and trustworthy
+### Cooperation
+- **Importance:** 87.0%
+- Pleasant with others and cooperative attitude
+### Initiative
+- **Importance:** 85.0%
+- Willingness to take on responsibilities
+### Adaptability/Flexibility
+- **Importance:** 84.0%
+- Important work characteristic
+### Stress Tolerance
+- **Importance:** 84.0%
+- Accepts criticism and deals calmly with stress
+### Concern for Others
+- **Importance:** 81.0%
+- Important work characteristic
+
+## User Persona Profile
+
+### Demographics
+- **Education:** Varies based on specific role requirements
+- **Experience:** Relevant experience in Pastoral Center environment
+- **Technical Proficiency:** Comfortable with standard office software and systems
+
+### Goals and Motivations
+- Serve the diocesan community effectively
+- Support the mission of the Church in Pastoral Center
+- Collaborate with colleagues to achieve organizational objectives
+- Maintain high standards of professional excellence
+
+### Pain Points and Challenges
+- Balancing multiple responsibilities and priorities
+- Adapting to evolving technology and systems
+- Meeting diverse stakeholder expectations
+- Managing resources effectively
+
+### Technology Needs
+- Reliable communication and collaboration tools
+- Efficient data management systems
+- User-friendly interfaces for daily tasks
+- Mobile access for flexibility when needed
+
+---
+
+*Generated on: 2025-06-12 14:35:11 UTC*  
+*Source: O*NET Database and diocesan role mapping*

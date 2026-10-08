@@ -39,3 +39,4 @@ output/
 ├── occupational/persona_*.md    # Stage 1: O*NET-based personas
 └── user/user_persona_*.md       # Stage 2: UX-focused personas
 ```
+Before a session ends, update STATUS.md. Set the state, today's date, the current focus, up to three next actions, and any blockers.
